@@ -19,10 +19,10 @@
     </div>
   </div>
   <div class="col s6">
-      <form method="post">
-          {% csrf_token %}
-          {{ feeding_form.as_p }}
-          <input type="submit" class="btn" value="Add Feeding">
+    <form action="{% url 'add_feeding' cat.id %}" method="post">
+        {% csrf_token %}
+        {{ feeding_form.as_p }}
+        <input type="submit" class="btn" value="Add Feeding">
       </form>
     <table class="striped">
       <thead>

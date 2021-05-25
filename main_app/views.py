@@ -1,3 +1,4 @@
+from main_app.forms import FeedingForm
 from django.shortcuts import render
 from .models import Dog
 
@@ -21,4 +22,12 @@ def dogs_index(request):
 # Django will pass any captured URL parameters as a named argument to the view function
 def dogs_detail(request, dog_id):
     dog = Dog.objects.get(id=dog_id)
-    return render(request, 'dogs/detail.html', { 'dog': dog })
+    # instantiate FeedingForm to be rendered in templates
+    feeding_form = FeedingForm()
+    return render(request, 'dogs/detail.html', { 
+        'dog': dog, 'feeding_form': feeding_form 
+        })
+
+def add_feeding(request, dog_id):
+    # pass is a way to define an 'empty' python function
+    pass
