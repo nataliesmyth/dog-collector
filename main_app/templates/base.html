@@ -12,6 +12,8 @@
   <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
   <!-- Materialize JS -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <!-- Main JS -->
+  <script src="{% static 'js/app.js' %}"></script>
 </head>
 <body>
   <header class="navbar-fixed">
@@ -21,8 +23,8 @@
           <li><a href="/" class="left brand-logo">&nbsp;&nbsp;DogCollector</a></li>
         </ul>
         <ul class="right">
-          <li><a href="/about">About</a></li>
-          <li><a href="/dogs">View All My Dogs</a></li>
+          <li><a href="{% url '' %}">About</a></li>
+          <li><a href="{% url '' %}">View All My Dogs</a></li>
         </ul>
       </div>
     </nav>
