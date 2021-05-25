@@ -24,6 +24,12 @@
         {{ feeding_form.as_p }}
         <input type="submit" class="btn" value="Add Feeding">
       </form>
+      <br>
+      {% if cat.fed_for_today %}
+      <div class="card-panel teal-text center-align">{{cat.name}} has been fed all meals for today</div>
+    {% else %}
+      <div class="card-panel red-text center-align">{{cat.name}} might be hungry</div>
+    {% endif %}
     <table class="striped">
       <thead>
         <tr><th>Date</th><th>Meal</th></tr>
