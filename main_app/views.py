@@ -1,20 +1,7 @@
 from django.shortcuts import render
+from .models import Dog
 
 # Create your views here.
-class Dog:
-  def __init__(self, name, breed, description, age):
-    self.name = name
-    self.breed = breed
-    self.description = description
-    self.age = age
-
-dogs = [
-  Dog('Zoe', 'Shih Tzu', "the sweetest pup you'll ever meet", 13),
-  Dog('Pippin', 'Shih Tzu', 'diluted tortoise shell', 0),
-  Dog('Sophie', 'black tripod', '3 legged cat', 4),
-  Dog('Lola', 'Shih Tzu', '3 legged cat', 12),
-  Dog('Riley', 'Ryans dog', '3 legged cat', 4)
-]
 
 # add import
 from django.http import HttpResponse
@@ -27,4 +14,11 @@ def about(request):
     return render(request, 'about.html')
 
 def dogs_index(request):
-    return render(request, 'dogs/index.html', { 'dogs': dogs})
+    dogs = Dog.objects.all()
+    return render(request, 'dogs/index.html', { 'dogs': dogs })
+
+# the dogs_detail function is using the get method to obtain the dog object by its id
+# Django will pass any captured URL parameters as a named argument to the view function
+def dogs_detail(request, dog_id):
+    dog = Dog.objects.get(id=dog_id)
+    return render(request, 'dogs/detail.html', { 'dog': dog })
