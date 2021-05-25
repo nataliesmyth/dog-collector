@@ -1,19 +1,19 @@
+from django.shortcuts import render, HttpResponse, redirect
 from .forms import FeedingForm
-from django.shortcuts import render, redirect
 from .models import Dog, Toy, Photo
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 import uuid
 import boto3
+# from django.http import HttpResponse
 
-# Create your views here.
+S3_BASE_URL = 'https://s3-us-east-2.amazonaws.com/'
+BUCKET = 'pupcollector'
 
-# add import
-from django.http import HttpResponse
-
-# define the home view
+# HOME ROUTE
 def home(request):
     return HttpResponse('<h1>Hello!</h1>')
 
+# ABOUT ROUTE
 def about(request):
     return render(request, 'about.html')
 
@@ -31,16 +31,45 @@ def dogs_detail(request, dog_id):
         'dog': dog, 'feeding_form': feeding_form 
         })
 
+# DOG ADD FEEDING ROUTE
 def add_feeding(request, dog_id):
-  # create the ModelForm using the data in request.POST
-  form = FeedingForm(request.POST)
-  # validate the form
-  if form.is_valid():
-    # don't save the form to the db until it
-    # has the dog_id assigned
-    new_feeding = form.save(commit=False)
-    new_feeding.dog_id = dog_id
-    new_feeding.save()
-  return redirect('detail', dog_id=dog_id)
+    # create the ModelForm using the data in request.POST
+    form = FeedingForm(request.POST)
+    # validate the form
+    if form.is_valid():
+    # don't save the form to the db until it has the dog_id assigned
+        new_feeding = form.save(commit=False)
+        new_feeding.dog_id = dog_id
+        new_feeding.save()
+        # note: always use redirect, not render, if data has been changed in the database.
+        return redirect('detail', dog_id=dog_id)
+    else:
+        return redirect('detail', dog_id=dog_id)
 
-# note: always use redirect, not render, if data has been changed in the database.
+# Dog Add Toys Route
+def assoc_toys(request, dog_id, toy_id):
+    print(f"Dog ID = {dog_id}, Toy ID = {toy_id}")
+    dog = Dog.objects.get(id=dog_id)
+    toy = Toy.objects.get(id=toy_id)
+    dog.toys.add(toy)
+    return redirect('detail', dog_id)
+
+
+def add_photo(request, dog_id):
+    # photo-fie will be the 'name' attribute on the <input type="file">
+    photo_file = request.FILES.get('photo-file', None)
+    if photo_file:
+        s3 = boto3.client('s3')
+        # We need a unique 'key' for S3 and an image file extension
+        key = uuid.uuid4().hex[:6] + photo_file.name[photo_file.name.rfind('.'):]
+        # just in case something goes wrong
+        try:
+            s3.upload_fileobj(photo_file, BUCKET, key)
+            # build the full url string
+            url = f"{S3_BASE_URL}{BUCKET}/{key}"
+            # we can assign to dog_id or dog (if  you have a dog object)
+            photo = Photo(url=url, dog_id=dog_id)
+            photo.save()
+        except:
+            print('An error occured uploading file to S3')
+    # return redirect('detail', dog_id=dog_id)
