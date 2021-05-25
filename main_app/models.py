@@ -31,6 +31,12 @@ class Dog(models.Model):
     def __str__(self):
         return self.name
 
+# Custom Join Table
+# class Dog_Toys():
+#   date = models.DateField() # We can our own properties
+#   dog = models.ForeignKey(Dog, on_delete=models.CASCADE)
+#   toy = models.ForeignKey(Toy, on_delete=models.CASCADE)
+
 # FEEDING MODEL
 class Feeding(models.Model):
     date = models.DateField('feeding date')
