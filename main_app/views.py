@@ -1,5 +1,5 @@
 from main_app.forms import FeedingForm
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Dog
 
 # Create your views here.
@@ -29,5 +29,15 @@ def dogs_detail(request, dog_id):
         })
 
 def add_feeding(request, dog_id):
-    # pass is a way to define an 'empty' python function
-    pass
+  # create the ModelForm using the data in request.POST
+  form = FeedingForm(request.POST)
+  # validate the form
+  if form.is_valid():
+    # don't save the form to the db until it
+    # has the dog_id assigned
+    new_feeding = form.save(commit=False)
+    new_feeding.dog_id = dog_id
+    new_feeding.save()
+  return redirect('detail', dog_id=dog_id)
+
+# note: always use redirect, not render, if data has been changed in the database.

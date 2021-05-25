@@ -19,7 +19,7 @@
     </div>
   </div>
   <div class="col s6">
-    <form action="{% url 'add_feeding' cat.id %}" method="post">
+    <form action="{% url 'add_feeding' dog.id %}" method="post">
         {% csrf_token %}
         {{ feeding_form.as_p }}
         <input type="submit" class="btn" value="Add Feeding">
