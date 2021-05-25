@@ -20,11 +20,11 @@
     <nav>
       <div class="nav-wrapper">
         <ul>
-          <li><a href="/" class="left brand-logo">&nbsp;&nbsp;DogCollector</a></li>
+          <li><a href="{% url 'home' %}" class="left brand-logo">&nbsp;&nbsp;DogCollector</a></li>
         </ul>
         <ul class="right">
-          <li><a href="{% url '' %}">About</a></li>
-          <li><a href="{% url '' %}">View All My Dogs</a></li>
+          <li><a href="{% url 'about' %}">About</a></li>
+          <li><a href="{% url 'index' %}">Dogs</a></li>
         </ul>
       </div>
     </nav>
