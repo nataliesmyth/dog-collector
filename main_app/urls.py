@@ -9,4 +9,5 @@ urlpatterns = [
     # route for dog detail page
     path('dogs/<int:dog_id>/', views.dogs_detail, name='detail'),
     path('dogs/<int:dog_id>/add_feeding/', views.add_feeding, name='add_feeding'),
+    path('cats/<int:cat_id>/add_photo/', views.add_photo, name='add_photo'),
 ]

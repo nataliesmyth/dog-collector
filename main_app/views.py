@@ -1,6 +1,9 @@
-from main_app.forms import FeedingForm
+from .forms import FeedingForm
 from django.shortcuts import render, redirect
-from .models import Dog
+from .models import Dog, Toy, Photo
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
+import uuid
+import boto3
 
 # Create your views here.
 
