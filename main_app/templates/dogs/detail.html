@@ -19,6 +19,11 @@
     </div>
   </div>
   <div class="col s6">
+      <form method="post">
+          {% csrf_token %}
+          {{ feeding_form.as_p }}
+          <input type="submit" class="btn" value="Add Feeding">
+      </form>
     <table class="striped">
       <thead>
         <tr><th>Date</th><th>Meal</th></tr>
@@ -34,4 +39,14 @@
     </table>
   </div>
 </div>
+<!-- Materialize requires us to initialize certain inputs using JS we want to run after elements are in the DOM, so we put the JS at the bottom of the template -->
+<script>
+    const dateEl = document.getElementById('id_date');
+  M.Datepicker.init(dateEl, {
+    format: 'yyyy-mm-dd',
+    defaultDate: new Date(),
+    setDefaultDate: true,
+    autoClose: true
+  });
+</script>
 {% endblock %}
