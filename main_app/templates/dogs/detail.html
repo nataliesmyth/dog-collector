@@ -13,11 +13,12 @@
         {% if dog.age > 0 %}
           <p>Age: {{ dog.age }}</p>
         {% else %}
-          <p>Age: Kitten</p>
+          <p>Age: Puppy</p>
         {% endif %}
       </div>
     </div>
   </div>
+  <!-- Feeding Form -->
   <div class="col s6">
     <form action="{% url 'add_feeding' dog.id %}" method="post">
         {% csrf_token %}
@@ -25,10 +26,10 @@
         <input type="submit" class="btn" value="Add Feeding">
       </form>
       <br>
-      {% if cat.fed_for_today %}
-      <div class="card-panel teal-text center-align">{{cat.name}} has been fed all meals for today</div>
+      {% if dog.fed_for_today %}
+      <div class="card-panel teal-text center-align">{{dog.name}} has been fed all meals for today</div>
     {% else %}
-      <div class="card-panel red-text center-align">{{cat.name}} might be hungry</div>
+      <div class="card-panel red-text center-align">{{dog.name}} might be hungry</div>
     {% endif %}
     <table class="striped">
       <thead>
@@ -45,6 +46,55 @@
     </table>
   </div>
 </div>
+<!-- Toy Display -->
+<hr />
+<div class="row">
+  <div class="col s6">
+    <h3>{{ dog.name }}'s Toys</h3>
+    {% if dog.toys.count %}
+      {% for toy in dog.toys.all %}
+        <div class="card">
+          <div class="card-content">
+            <span class="card-title">
+              A <span style="color: {{ toy.color }}">{{ toy.color }}</span> {{ toy.name }}
+            </span>
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <h5>No Toys :(</h5>
+    {% endif %}
+  </div>
+<!-- Available toys will be displayed after this line -->
+<div class="col s6">
+  <h3>Available Toys</h3>
+  {% if toys.count %}
+    {% for toy in toys.all %}
+      <div class="card">
+        <div class="card-content">
+          <span class="card-title">
+            A <span style="color: {{ toy.color }}">{{ toy.color }}</span> {{ toy.name }}
+          </span>
+        </div>
+        <div class="card-action">
+          <form action="{% url 'assoc_toys' dog.id toy.id %}" method="POST">
+            {% csrf_token %}
+            <button type="submit" class="btn">Add</button>
+          </form>
+        </div>
+      </div>
+    {% endfor %}
+  {% else %}
+    <h5>{{dog.name}} Already Has All Toys Available</h5>
+  {% endif %}
+</div>
+</div>
+<!-- Photo Markup -->
+{% for photo in dog.photo_set.all %}
+      <img class="responsive-img card-panel" src="{{photo.url}}">
+    {% empty %}
+      <div class="card-panel teal-text center-align">No Photos Uploaded</div>
+    {% endfor %}
 <!-- Materialize requires us to initialize certain inputs using JS we want to run after elements are in the DOM, so we put the JS at the bottom of the template -->
 <script>
     const dateEl = document.getElementById('id_date');
