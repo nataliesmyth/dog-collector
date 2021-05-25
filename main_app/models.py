@@ -35,3 +35,7 @@ class Feeding(models.Model):
     def __str__(self):
         # Nice method for obtaining the friendly value of a Field.choice
         return f"{self.get_meal_display()} on {self.date}"
+
+# change the default order so most recent dates are displayed on top
+class Meta:
+    ordering = ['-date']
