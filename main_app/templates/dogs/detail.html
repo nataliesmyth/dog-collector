@@ -18,19 +18,14 @@
       </div>
     </div>
   </div>
-  <!-- Feeding Form -->
   <div class="col s6">
-    <form action="{% url 'add_feeding' dog.id %}" method="post">
-        {% csrf_token %}
-        {{ feeding_form.as_p }}
-        <input type="submit" class="btn" value="Add Feeding">
-      </form>
-      <br>
-      {% if dog.fed_for_today %}
-      <div class="card-panel teal-text center-align">{{dog.name}} has been fed all meals for today</div>
-    {% else %}
-      <div class="card-panel red-text center-align">{{dog.name}} might be hungry</div>
-    {% endif %}
+    <!-- new code below -->
+  <form method="post" action="{% url 'add_feeding' dog.id %}">
+    {% csrf_token %}
+    {{ feeding_form.as_p }}
+    <input type="submit" class="btn" value="Add Feeding">
+  </form>
+  <!-- new code above -->
     <table class="striped">
       <thead>
         <tr><th>Date</th><th>Meal</th></tr>
@@ -46,7 +41,7 @@
     </table>
   </div>
 </div>
-<!-- Toy Display -->
+
 <hr />
 <div class="row">
   <div class="col s6">
@@ -65,7 +60,8 @@
       <h5>No Toys :(</h5>
     {% endif %}
   </div>
-<!-- Available toys will be displayed after this line -->
+  <!-- Available toys will come after this line -->
+<!-- Available toys will come after this line -->
 <div class="col s6">
   <h3>Available Toys</h3>
   {% if toys.count %}
@@ -89,22 +85,19 @@
   {% endif %}
 </div>
 </div>
-<!-- Photo Markup -->
-{% for photo in dog.photo_set.all %}
-      <img class="responsive-img card-panel" src="{{photo.url}}">
-    {% empty %}
-      <div class="card-panel teal-text center-align">No Photos Uploaded</div>
-    {% endfor %}
-<!-- Materialize requires us to initialize certain inputs using JS we want to run after elements are in the DOM, so we put the JS at the bottom of the template -->
+
 <script>
-    const dateEl = document.getElementById('id_date');
+  const dateEl = document.getElementById('id_date');
   M.Datepicker.init(dateEl, {
     format: 'yyyy-mm-dd',
     defaultDate: new Date(),
     setDefaultDate: true,
     autoClose: true
   });
+
+  // add additional JS to initialize select below
   const selectEl = document.getElementById('id_meal');
   M.FormSelect.init(selectEl);
 </script>
+
 {% endblock %}

@@ -5,6 +5,7 @@ urlpatterns = [
     # Static Routes
     path('', views.home, name='home'),
     path('about/', views.about, name='about'),
+    path('contact/', views.contact, name='contact'),
     path('dogs/<int:dog_id>/add_photo/', views.add_photo, name='add_photo'),
     # Dog Routes
     path('dogs', views.dogs_index, name='index'),

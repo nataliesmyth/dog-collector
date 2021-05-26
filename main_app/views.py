@@ -4,18 +4,21 @@ from .models import Dog, Toy, Photo
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 import uuid
 import boto3
-# from django.http import HttpResponse
 
 S3_BASE_URL = 'https://s3-us-east-2.amazonaws.com/'
 BUCKET = 'pupcollector'
 
 # HOME ROUTE
 def home(request):
-    return HttpResponse('<h1>Hello!</h1>')
+    return render(request, 'home.html')
 
 # ABOUT ROUTE
 def about(request):
     return render(request, 'about.html')
+
+# CONTACT ROUTE
+def contact(request):
+    return render(request, 'basic/contact.html')
 
 def dogs_index(request):
     dogs = Dog.objects.all()
@@ -25,11 +28,15 @@ def dogs_index(request):
 # Django will pass any captured URL parameters as a named argument to the view function
 def dogs_detail(request, dog_id):
     dog = Dog.objects.get(id=dog_id)
+    toys_dog_doesnt_have = Toy.objects.exclude(id__in=dog.toys.all().values_list('id'))
     # instantiate FeedingForm to be rendered in templates
     feeding_form = FeedingForm()
-    return render(request, 'dogs/detail.html', { 
-        'dog': dog, 'feeding_form': feeding_form 
-        })
+    context = {
+        'dog': dog,
+        'feeding_form': feeding_form,
+        'toys': toys_dog_doesnt_have,
+    }
+    return render(request, 'dogs/detail.html', context)
 
 # DOG ADD FEEDING ROUTE
 def add_feeding(request, dog_id):
@@ -48,7 +55,7 @@ def add_feeding(request, dog_id):
 
 # Dog Add Toys Route
 def assoc_toys(request, dog_id, toy_id):
-    print(f"Dog ID = {dog_id}, Toy ID = {toy_id}")
+    # print(f"Dog ID = {dog_id}, Toy ID = {toy_id}")
     dog = Dog.objects.get(id=dog_id)
     toy = Toy.objects.get(id=toy_id)
     dog.toys.add(toy)
