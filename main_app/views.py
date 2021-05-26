@@ -56,11 +56,9 @@ def add_feeding(request, dog_id):
 
 # Dog Add Toys Route
 def assoc_toys(request, dog_id, toy_id):
-    # print(f"Dog ID = {dog_id}, Toy ID = {toy_id}")
-    dog = Dog.objects.get(id=dog_id)
-    toy = Toy.objects.get(id=toy_id)
-    dog.toys.add(toy)
-    return redirect('detail', dog_id)
+    # NOTE You can also pass a toy's id instead of the whole object
+    Dog.objects.get(id=dog_id).toys.add(toy_id)
+    return redirect('detail', dog_id=dog_id)
 
 
 def add_photo(request, dog_id):

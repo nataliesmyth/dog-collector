@@ -19,14 +19,14 @@
     </div>
   </div>
   <div class="col s6">
-    <!-- new code below -->
-  <form method="post" action="{% url 'add_feeding' dog.id %}">
+
+    <form method="post" action="{% url 'add_feeding' dog.id %}">
     {% csrf_token %}
     {{ feeding_form.as_p }}
     <input type="submit" class="btn" value="Add Feeding">
   </form>
-  <!-- new code above -->
-    <table class="striped">
+
+  <table class="striped">
       <thead>
         <tr><th>Date</th><th>Meal</th></tr>
       </thead>
@@ -61,6 +61,7 @@
     {% endif %}
   </div>
 </div>
+
 <!-- Available toys will come after this line -->
 <div class="col s6">
   <h3>Available Toys</h3>
