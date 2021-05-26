@@ -28,6 +28,7 @@ def dogs_index(request):
 # Django will pass any captured URL parameters as a named argument to the view function
 def dogs_detail(request, dog_id):
     dog = Dog.objects.get(id=dog_id)
+    # Get toys the dog doesn't have
     toys_dog_doesnt_have = Toy.objects.exclude(id__in=dog.toys.all().values_list('id'))
     # instantiate FeedingForm to be rendered in templates
     feeding_form = FeedingForm()
