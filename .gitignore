@@ -1,2 +1,7 @@
 .env
 db.sqlite3
+dogcollector_project/__pycache__
+dogcollector_project/__init__.py
+dogcollector_project/settings.py
+main_app/__pycache__
+main_app/migrations
