@@ -12,7 +12,7 @@ urlpatterns = [
     path('dogs/<int:dog_id>/', views.dogs_detail, name='detail'),
     # Feeding Routes
     path('dogs/<int:dog_id>/add_feeding/', views.add_feeding, name='add_feeding'),
-    # Toy Routes
+    # Toy Routes: associate a toy with a dog (M:M)
     path('dogs/<int:dog_id>/assoc_toy/<int:toy_id>', views.assoc_toys, name='assoc_toys'),
     # Auth Routes
 ]
