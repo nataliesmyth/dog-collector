@@ -1,5 +1,5 @@
 from django.shortcuts import render, HttpResponse, redirect
-from .forms import FeedingForm
+from .forms import FeedingForm, DogForm
 from .models import Dog, Toy, Photo
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 import uuid
@@ -20,11 +20,16 @@ def about(request):
 def contact(request):
     return render(request, 'basic/contact.html')
 
+# DOGS INDEX ROUTE
 def dogs_index(request):
     dogs = Dog.objects.all()
-    return render(request, 'dogs/index.html', { 'dogs': dogs })
+    context = {
+        'dogs': dogs
+    }
+    return render(request, 'dogs/index.html', context)
 
-# the dogs_detail function is using the get method to obtain the dog object by its id
+# DOGS SHOW/DETAIL ROUTE
+# the function below uses the get method to obtain the dog object by its id
 # Django will pass any captured URL parameters as a named argument to the view function
 def dogs_detail(request, dog_id):
     dog = Dog.objects.get(id=dog_id)
@@ -38,6 +43,27 @@ def dogs_detail(request, dog_id):
         'toys': toys_dog_doesnt_have,
     }
     return render(request, 'dogs/detail.html', context)
+
+# DOG EDIT/UPDATE ROUTE
+def edit_dog(request, dog_id):
+    dog = Dog.objects.get(id=dog_id)
+    # GET - Edit Dog
+    # POST - Update Dog
+    if request.method == 'POST':
+        form = DogForm(request.POST, instance=dog)
+        if form.is_valid():
+            cat = form.save()
+            return redirect('detail', dog.id)
+    else:
+        # Create Form
+        form = DogForm(instance=dog)
+        # Render Form
+        return render(request, 'dogs/edit.html', {'form': form})
+
+# DOGS NEW ROUTE
+def add_dog(request):
+    pass
+
 
 # DOG ADD FEEDING ROUTE
 def add_feeding(request, dog_id):
