@@ -16,9 +16,15 @@
           <p>Age: Puppy</p>
         {% endif %}
       </div>
+
+      {% comment %} EDIT & DELETE ACTIONS {% endcomment %}
+      <div class="card-action">
+        <a href="{% url 'delete_dog' dog.id %}">Delete</a>
+        <a href="{% url 'edit_dog' dog.id %}">Edit</a>
+      </div>
     </div>
   </div>
-  <div class="col s6">
+<div class="col s6">
 
     <form method="post" action="{% url 'add_feeding' dog.id %}">
     {% csrf_token %}
@@ -41,6 +47,8 @@
     </table>
   </div>
 </div>
+
+{% comment %} SECOND ROW {% endcomment %}
 
 <hr />
 <div class="row">
