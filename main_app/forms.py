@@ -1,5 +1,5 @@
 from django import forms
-from .models import Dog, Feeding
+from .models import Feeding, Dog
 
 # Feeding Form
 class FeedingForm(forms.ModelForm):

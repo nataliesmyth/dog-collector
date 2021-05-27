@@ -64,6 +64,12 @@ def edit_dog(request, dog_id):
 def add_dog(request):
     pass
 
+# DOG DELETE ROUTE
+def delete_dog(request, dog_id):
+    # dog = Dog.objects.get(id=dog_id)
+    # dog.delete()
+    Dog.objects.get(id=dog_id).delete()
+    return redirect('index')
 
 # DOG ADD FEEDING ROUTE
 def add_feeding(request, dog_id):
@@ -82,7 +88,7 @@ def add_feeding(request, dog_id):
 
 # Dog Add Toys Route
 def assoc_toys(request, dog_id, toy_id):
-    # NOTE You can also pass a toy's id instead of the whole object
+    # You can also pass a toy's id instead of the whole object
     Dog.objects.get(id=dog_id).toys.add(toy_id)
     return redirect('detail', dog_id=dog_id)
 
