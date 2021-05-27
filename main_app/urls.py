@@ -18,4 +18,5 @@ urlpatterns = [
     # Toy Routes: associate a toy with a dog (M:M)
     path('dogs/<int:dog_id>/assoc_toy/<int:toy_id>', views.assoc_toys, name='assoc_toys'),
     # Auth Routes
+    path('accounts/signup', views.signup, name='signup'),
 ]
