@@ -24,12 +24,11 @@ def contact(request):
 
 # DOGS INDEX ROUTE
 def dogs_index(request):
-    # This reads all dogs to logged in users, we want to change this so it shows only the dogs that belong to the user
-    dogs = Dog.objects.all()
-    context = {
-        'dogs': dogs
-    }
-    return render(request, 'dogs/index.html', context)
+    # Query below retrieves the logged in users dogs
+    dogs = Dog.objects.filter(user=request.user)
+    # Another way to retrieve logged in users dogs:
+    # dogs = request.user.dog_set.all()
+    return render(request, 'dogs/index.html', { 'dogs': dogs})
 
 # DOGS SHOW/DETAIL ROUTE
 # the function below uses the get method to obtain the dog object by its id
