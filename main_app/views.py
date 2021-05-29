@@ -52,7 +52,7 @@ def edit_dog(request, dog_id):
     if request.method == 'POST':
         form = DogForm(request.POST, instance=dog)
         if form.is_valid():
-            cat = form.save()
+            dog = form.save()
             return redirect('detail', dog.id)
     else:
         # Create Form
@@ -61,8 +61,31 @@ def edit_dog(request, dog_id):
         return render(request, 'dogs/edit.html', {'form': form})
 
 # DOGS NEW ROUTE
-def add_dog(request):
-    pass
+    # combined view function like this one
+    # When creating something in the database we need a 
+    # We call it combined because it handles both POST (or 
+    # DELETE or PUT) and GET requests
+def new_dog(request):
+# If a post request is made to this view function
+    if request.method == 'POST':
+    # We save the form data to a new variable
+        form = DogForm(request.POST)
+    # We make sure the data passes validations
+    if form.is_valid():
+        # If it does, associate cat with logged in user and 
+        # save it in the database
+        dog = form.save(commit=False)
+        dog.user = request.user
+        dog.save()
+        # Redirect the user to the new cat's detail page
+        return redirect('detail', dog.id)
+    else:
+    # If it's a get request, load the form from forms.py
+        form = DogForm()
+        # Save the form to a new variable
+        context = { 'form': form }
+        # Render the cat form template with the form
+        return render(request, 'dogs/dog_form.html', context)
 
 # DOG DELETE ROUTE
 def delete_dog(request, dog_id):
