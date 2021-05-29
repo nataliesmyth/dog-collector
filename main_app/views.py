@@ -4,6 +4,7 @@ from .models import Dog, Toy, Photo
 from django.views.generic import ListView, DetailView
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.decorators import login_required
 import uuid
 import boto3
 
