@@ -35,6 +35,7 @@ def dogs_index(request):
 # DOGS SHOW/DETAIL ROUTE
 # the function below uses the get method to obtain the dog object by its id
 # Django will pass any captured URL parameters as a named argument to the view function
+@login_required
 def dogs_detail(request, dog_id):
     dog = Dog.objects.get(id=dog_id)
     # Get toys the dog doesn't have
@@ -49,6 +50,7 @@ def dogs_detail(request, dog_id):
     return render(request, 'dogs/detail.html', context)
 
 # DOG EDIT/UPDATE ROUTE
+@login_required
 def edit_dog(request, dog_id):
     dog = Dog.objects.get(id=dog_id)
     # GET - Edit Dog
@@ -69,6 +71,7 @@ def edit_dog(request, dog_id):
     # When creating something in the database we need a 
     # We call it combined because it handles both POST (or 
     # DELETE or PUT) and GET requests
+@login_required
 def new_dog(request):
 # If a post request is made to this view function
     if request.method == 'POST':
@@ -91,6 +94,7 @@ def new_dog(request):
         return render(request, 'dogs/dog_form.html', context)
 
 # DOG DELETE ROUTE
+@login_required
 def delete_dog(request, dog_id):
     # dog = Dog.objects.get(id=dog_id)
     # dog.delete()
@@ -98,6 +102,7 @@ def delete_dog(request, dog_id):
     return redirect('index')
 
 # DOG ADD FEEDING ROUTE
+@login_required
 def add_feeding(request, dog_id):
     # create the ModelForm using the data in request.POST
     form = FeedingForm(request.POST)
@@ -113,6 +118,7 @@ def add_feeding(request, dog_id):
         return redirect('detail', dog_id=dog_id)
 
 # Dog Add Toys Route
+@login_required
 def assoc_toys(request, dog_id, toy_id):
     # You can also pass a toy's id instead of the whole object
     Dog.objects.get(id=dog_id).toys.add(toy_id)
