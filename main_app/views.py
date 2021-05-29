@@ -1,6 +1,6 @@
 from django.shortcuts import render, HttpResponse, redirect
-from .forms import FeedingForm, DogForm
 from .models import Dog, Toy, Photo
+from .forms import FeedingForm, DogForm
 from django.views.generic import ListView, DetailView
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
@@ -28,9 +28,10 @@ def contact(request):
 def dogs_index(request):
     # Query below retrieves the logged in users dogs
     dogs = Dog.objects.filter(user=request.user)
-    # Another way to retrieve logged in users dogs:
-    # dogs = request.user.dog_set.all()
-    return render(request, 'dogs/index.html', { 'dogs': dogs})
+    context = {
+        'dogs': dogs
+    }
+    return render(request, 'dogs/index.html', context)
 
 # DOGS SHOW/DETAIL ROUTE
 # the function below uses the get method to obtain the dog object by its id
@@ -67,31 +68,27 @@ def edit_dog(request, dog_id):
         return render(request, 'dogs/edit.html', {'form': form})
 
 # DOGS NEW ROUTE
-    # combined view function like this one
-    # When creating something in the database we need a 
-    # We call it combined because it handles both POST (or 
-    # DELETE or PUT) and GET requests
 @login_required
-def new_dog(request):
-# If a post request is made to this view function
+def add_dog(request):
     if request.method == 'POST':
-    # We save the form data to a new variable
-        form = DogForm(request.POST)
-    # We make sure the data passes validations
-    if form.is_valid():
-        # If it does, associate cat with logged in user and save it in the database
-        dog = form.save(commit=False)
-        dog.user = request.user
-        dog.save()
-        # Redirect the user to the new cat's detail page
-        return redirect('detail', dog.id)
+        # Can we print out one piece of data from the request?
+        # print('Name = ', request.POST['name'])
+
+        # Pull Dog data out of request.POST
+        name = request.POST['name']
+        breed = request.POST['breed']
+        description = request.POST['description']
+        age = request.POST['age']
+
+        # Create new instance of Dog object
+        new_dog = Dog(name=name, breed=breed, description=description, age=age)
+        # Save new dog to DB
+        new_dog.save()
+
+        return redirect('detail', new_dog.id)
     else:
-    # If it's a get request, load the form from forms.py
         form = DogForm()
-        # Save the form to a new variable
-        context = { 'form': form }
-        # Render the cat form template with the form
-        return render(request, 'dogs/dog_form.html', context)
+        return render(request, 'dogs/new.html', {'form': form})
 
 # DOG DELETE ROUTE
 @login_required
