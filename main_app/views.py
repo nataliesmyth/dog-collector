@@ -24,6 +24,7 @@ def contact(request):
 
 # DOGS INDEX ROUTE
 def dogs_index(request):
+    # This reads all dogs to logged in users, we want to change this so it shows only the dogs that belong to the user
     dogs = Dog.objects.all()
     context = {
         'dogs': dogs
@@ -133,7 +134,7 @@ def signup(request):
     # A bad POST or GET request, so render signup.html with an empty form
     form = UserCreationForm()
     context = {'form': form, 'error_message': error_message}
-    return render(req, 'registration/signup.html', context)
+    return render(request, 'registration/signup.html', context)
 
 
 def add_photo(request, dog_id):
