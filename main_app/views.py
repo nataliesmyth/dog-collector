@@ -67,28 +67,50 @@ def edit_dog(request, dog_id):
         # Render Form
         return render(request, 'dogs/edit.html', {'form': form})
 
-# DOGS NEW ROUTE
+# DOGS NEW ROUTE WITH CUSTOM FORM
 @login_required
 def add_dog(request):
-    if request.method == 'POST':
-        # Can we print out one piece of data from the request?
-        # print('Name = ', request.POST['name'])
+  if request.method == 'POST':
+    # Can we print out one piece of data from the request?
+    # print('Name = ', request.POST['name'])
 
-        # Pull Dog data out of request.POST
-        name = request.POST['name']
-        breed = request.POST['breed']
-        description = request.POST['description']
-        age = request.POST['age']
+    # Pull Dog data out of request.POST
+    name = request.POST['name']
+    breed = request.POST['breed']
+    description = request.POST['description']
+    age = request.POST['age']
 
-        # Create new instance of Dog object
-        new_dog = Dog(name=name, breed=breed, description=description, age=age)
-        # Save new dog to DB
-        new_dog.save()
+    # Create new instance of Dog object
+    # new_dog = Dog(name=name, breed=breed, description=description, age=age)
+    form = DogForm(request.POST)
+    new_dog = form.save(commit=False)
+    # Associate User and Dog
+    new_dog.user = request.user
+    # Save new Dog in DB
+    new_dog.save()
 
-        return redirect('detail', new_dog.id)
-    else:
-        form = DogForm()
-        return render(request, 'dogs/new.html', {'form': form})
+    return redirect('detail', new_dog.id)
+  else:
+    form = DogForm()
+    return render(request, 'dogs/new.html', {'form': form})
+
+
+
+# Dogs New Route with Class Based Form
+# @login_required
+# def add_dog(request):
+#   if request.method == 'POST':
+#     form = DogForm(request.POST)
+#     if form.is_valid():
+#       new_dog = form.save(commit=false)
+#       # Associate User and Dog
+#       new_dog.user = request.user
+#       # Save new Dog in DB
+#       new_dog.save()
+#       return redirect('detail', new_dog.id)
+#   else:
+#     form = DogForm()
+#     return render(request, 'dogs/new.html', {'form': form})
 
 # DOG DELETE ROUTE
 @login_required
@@ -114,7 +136,7 @@ def add_feeding(request, dog_id):
     else:
         return redirect('detail', dog_id=dog_id)
 
-# Dog Add Toys Route
+# DOG ADD TOY ROUTE
 @login_required
 def assoc_toys(request, dog_id, toy_id):
     # You can also pass a toy's id instead of the whole object
@@ -128,7 +150,7 @@ def signup(request):
         # This is how to create a 'user' form object that includes data from the browser
         form = UserCreationForm(request.POST)
         if form.is_valid():
-            # Add user to the  database
+            # Add user to the database
             user = form.save()
             # Log in a user via code
             login(request, user)
