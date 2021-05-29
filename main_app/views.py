@@ -1,7 +1,9 @@
 from django.shortcuts import render, HttpResponse, redirect
 from .forms import FeedingForm, DogForm
 from .models import Dog, Toy, Photo
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, DetailView
+from django.contrib.auth import login
+from django.contrib.auth.forms import UserCreationForm
 import uuid
 import boto3
 
@@ -72,8 +74,7 @@ def new_dog(request):
         form = DogForm(request.POST)
     # We make sure the data passes validations
     if form.is_valid():
-        # If it does, associate cat with logged in user and 
-        # save it in the database
+        # If it does, associate cat with logged in user and save it in the database
         dog = form.save(commit=False)
         dog.user = request.user
         dog.save()
@@ -114,6 +115,25 @@ def assoc_toys(request, dog_id, toy_id):
     # You can also pass a toy's id instead of the whole object
     Dog.objects.get(id=dog_id).toys.add(toy_id)
     return redirect('detail', dog_id=dog_id)
+
+# SIGN UP ROUTE
+def signup(request):
+    error_message = ''
+    if request.method == 'POST':
+        # This is how to create a 'user' form object that includes data from the browser
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            # Add user to the  database
+            user = form.save()
+            # Log in a user via code
+            login(request, user)
+            return redirect('index')
+        else:
+            error_message = 'Invalid sign up - try again'
+    # A bad POST or GET request, so render signup.html with an empty form
+    form = UserCreationForm()
+    context = {'form': form, 'error_message': error_message}
+    return render(req, 'registration/signup.html', context)
 
 
 def add_photo(request, dog_id):
