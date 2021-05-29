@@ -24,6 +24,7 @@ def contact(request):
     return render(request, 'basic/contact.html')
 
 # DOGS INDEX ROUTE
+@login_required
 def dogs_index(request):
     # Query below retrieves the logged in users dogs
     dogs = Dog.objects.filter(user=request.user)
