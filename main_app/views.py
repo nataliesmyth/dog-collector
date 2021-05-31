@@ -81,7 +81,7 @@ def add_dog(request):
     age = request.POST['age']
 
     # Create new instance of Dog object
-    # new_dog = Dog(name=name, breed=breed, description=description, age=age)
+    new_dog = Dog(name=name, breed=breed, description=description, age=age)
     form = DogForm(request.POST)
     new_dog = form.save(commit=False)
     # Associate User and Dog
