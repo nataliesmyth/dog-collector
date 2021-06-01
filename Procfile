@@ -1,1 +1,1 @@
-web: gunicorn dogcollector_project.wsgi --log-file -
+web: gunicorn dogcollectorapp.wsgi --log-file -
