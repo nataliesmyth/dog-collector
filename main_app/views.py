@@ -144,22 +144,24 @@ def assoc_toys(request, dog_id, toy_id):
     return redirect('detail', dog_id=dog_id)
 
 # SIGN UP ROUTE
+# User Signup Route
 def signup(request):
-    error_message = ''
-    if request.method == 'POST':
-        # This is how to create a 'user' form object that includes data from the browser
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
-            # Add user to the database
-            user = form.save()
-            # Log in a user via code
-            login(request, user)
-            return redirect('index')
-        else:
-            error_message = 'Invalid sign up - try again'
-    # A bad POST or GET request, so render signup.html with an empty form
-    form = UserCreationForm()
-    context = {'form': form, 'error_message': error_message}
+  error = None
+  form = UserCreationForm()
+  context = {
+    'form': form,
+    'error': error,
+  }
+  if request.method == 'POST':
+    # Create an instance of Form
+    form = UserCreationForm(request.POST)
+    if form.is_valid():
+      user = form.save()
+      login(request, user)
+      return redirect('index')
+    else:
+      return render(request, 'registration/signup.html', {'form': form, 'error': form.errors})
+  else:
     return render(request, 'registration/signup.html', context)
 
 
