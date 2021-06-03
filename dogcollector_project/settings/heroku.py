@@ -5,7 +5,7 @@ Production Settings for Heroku
 import environ
 
 # If using in your own project, update the project namespace below
-from dogcollector_project.settings.base import *
+from dogcollectorapp.settings.base import *
 
 env = environ.Env(
     # set casting, default value
