@@ -1,6 +1,6 @@
 # Dog-Collector
 
-A modern full-stack reference app
+A modern full-stack reference application.
 
 ## Index:
 
@@ -12,14 +12,14 @@ A modern full-stack reference app
 
 ## Scope
 
-The final objective is to build an app where users can buy or sell their new/used goods with other users. Users will be able to vizualize their own shops, other's shops or search the whole database for items. Due to limited time, sprints will be divided into feature sprints detailed in the _Milestones_ section.
+The final objective is to build an app where users can create a list of dogs and check if they are fed and have toys to play with.
+buy or sell their new/used goods with other users. Users will be able to vizualize their own shops, other's shops or search the whole database for items. Due to limited time, sprints will be divided into feature sprints detailed in the _Milestones_ section.
 
 ### Technologies used
 
-- ReactJs
-  - axios
-  - bootstrap
+- Django Framework
   - router-dom
+- Materialize CDN
 - NodeJs
   - bcrypt
   - body parser
